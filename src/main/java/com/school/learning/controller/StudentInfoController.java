@@ -12,13 +12,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/learning/student")
+@RequestMapping("/api/learning/student")
 public class StudentInfoController {
     @Autowired
     private StudentInfoService studentInfoService;
 
     //取得所有學生資料
-    @GetMapping
+    @GetMapping("/query")
     public List<StudentInfo> getStudentInfoList(){
         List<StudentInfo> res = studentInfoService.getStudentInfoList();
 
@@ -29,21 +29,21 @@ public class StudentInfoController {
     }
 
     //新增一筆學生資料
-    @PostMapping
+    @PostMapping("/insert")
     public RspBody insertStudentInfoReq(@RequestBody StudentReq studentReq){
         RspBody rspBody = studentInfoService.insertStudentInfo(studentReq);
         return rspBody;
     }
 
     //刪除一筆學生資料
-    @DeleteMapping("/{studentId}")
+    @DeleteMapping("/delete/{studentId}")
     public RspBody deleteStudentInfoById(@PathVariable int studentId){
         RspBody rspBody = studentInfoService.deleteStudentById(studentId);
         return rspBody;
     }
 
     //修改指定學生資料
-    @PutMapping("/{studentId}")
+    @PutMapping("/edit/{studentId}")
     public RspBody putStudentInfoById(@PathVariable int studentId, @RequestBody StudentReq studentReq){
         RspBody rspBody = studentInfoService.putStudentById(studentId, studentReq);
         return rspBody;
