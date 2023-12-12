@@ -10,7 +10,7 @@
 <h2>Student Management System</h2>
 
 <!-- Add Student Form -->
-<form th:action="@{/v1/learning/student}" method="post">
+<form th:action="@{/api/learning/student/insert}" method="post" enctype="application/json">
   <h3>Add Student</h3>
   <label for="studentName">Name:</label>
   <input type="text" id="studentName" name="studentName" required>
@@ -48,13 +48,17 @@
     <td th:text="${student.studentGender}"></td>
     <td th:text="${student.studentTel}"></td>
     <td>
-      <a th:href="@{'/v1/learning/student/' + ${student.studentId}}">Edit</a>
+      <a th:href="@{'/api/learning/student/edit/' + ${student.studentId}}">Edit</a>
       |
-      <a th:href="@{'/v1/learning/student/' + ${student.studentId}}" th:method="delete">Delete</a>
+      <a th:href="@{'/api/learning/student/delete/' + ${student.studentId}}" th:method="delete">Delete</a>
     </td>
   </tr>
   </tbody>
 </table>
+<script>
+  function toEdit(){
 
+  }
+</script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+</head>
+<body>
+
+<h2>補習班學員管理系統</h2>
+<div class="flex-container">
+    <form class="flex-item" th:action="@{/api/learning/student/insert}" method="post" enctype="application/json">
+        <h3>學員新增介面</h3>
+        <label for="studentName">學員姓名：</label>
+        <input type="text" id="studentName" name="studentName" required>
+        <br>
+        <label for="studentAge">年齡：</label>
+        <input type="number" id="studentAge" name="studentAge" required>
+        <br>
+        <label for="studentGender">性別：</label>
+        <input type="text" id="studentGender" name="studentGender" required>
+        <br>
+        <label for="studentTel">電話：</label>
+        <input type="text" id="studentTel" name="studentTel" required>
+        <br>
+        <div class="actions-plus">
+            <button type="button" onclick="location.href='/api/learning/student'">返回</button>
+            <button type="submit">新增學員</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

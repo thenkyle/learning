@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management System</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+</head>
+<body>
+
+<div>
+  <h2>補習班學員管理系統</h2>
+
+  <!-- Student List -->
+  <h3>學員名單</h3>
+
+  <div class="actions">
+    <button type="button" id="insertBtn" onclick="location.href='/api/learning/student/insert'">新增學員</button>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>編號</th>
+      <th>姓名</th>
+      <th>年齡</th>
+      <th>性別</th>
+      <th>電話</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students}">
+      <td th:text="${student.studentId}"></td>
+      <td th:text="${student.studentName}"></td>
+      <td th:text="${student.studentAge}"></td>
+      <td th:text="${student.studentGender}"></td>
+      <td th:text="${student.studentTel}"></td>
+      <td>
+        <a th:href="@{'/api/learning/student/edit/' + ${student.studentId}}">編輯</a>
+        |
+        <a th:href="@{'/api/learning/student/delete/' + ${student.studentId}}" th:method="delete">刪除</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

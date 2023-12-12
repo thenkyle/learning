@@ -20,6 +20,12 @@ public class StudentInfoService {
         return res;
     }
 
+    //取得單筆學生資料
+    public StudentInfo getStudentInfoById(int studentId){
+        StudentInfo res = studentInfoRepository.findById(studentId);
+        return res;
+    }
+
     //新增學生資料
     public RspBody insertStudentInfo(StudentReq studentReq) {
         StudentInfo studentInfo = new StudentInfo();

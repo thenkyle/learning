@@ -5,47 +5,61 @@ import com.school.learning.controller.dto.response.RspBody;
 import com.school.learning.model.entity.StudentInfo;
 import com.school.learning.service.StudentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/learning/student")
 public class StudentInfoController {
     @Autowired
     private StudentInfoService studentInfoService;
 
     //取得所有學生資料
-    @GetMapping("/query")
-    public List<StudentInfo> getStudentInfoList(){
+    @GetMapping
+    public String getStudentInfoList(Model model){
         List<StudentInfo> res = studentInfoService.getStudentInfoList();
+        model.addAttribute("students", res);
+        return "studentInfo";
+    }
 
-        if(res.size() == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        return res;
+    //Info -> Insert
+    @GetMapping("/insert")
+    public String showInsertForm(Model model) {
+        model.addAttribute("students", new StudentInfo());
+        return "studentInsert";
     }
 
     //新增一筆學生資料
     @PostMapping("/insert")
-    public RspBody insertStudentInfoReq(@RequestBody StudentReq studentReq){
-        RspBody rspBody = studentInfoService.insertStudentInfo(studentReq);
-        return rspBody;
+    public String insertStudentInfoReq(@ModelAttribute StudentReq studentReq){
+        studentInfoService.insertStudentInfo(studentReq);
+        return "redirect:/api/learning/student";
     }
 
     //刪除一筆學生資料
-    @DeleteMapping("/delete/{studentId}")
-    public RspBody deleteStudentInfoById(@PathVariable int studentId){
-        RspBody rspBody = studentInfoService.deleteStudentById(studentId);
-        return rspBody;
+    @GetMapping("/delete/{studentId}")
+    public String deleteStudentInfoById(@PathVariable int studentId, RedirectAttributes redirectAttributes) {
+        studentInfoService.deleteStudentById(studentId);
+        return "redirect:/api/learning/student";
+    }
+
+    //Info -> Edit
+    @GetMapping("/edit/{studentId}")
+    public String showEditForm(@PathVariable int studentId, Model model) {
+        StudentInfo studentInfo = studentInfoService.getStudentInfoById(studentId);
+        model.addAttribute("student", studentInfo);
+        return "studentEdit";
     }
 
     //修改指定學生資料
-    @PutMapping("/edit/{studentId}")
-    public RspBody putStudentInfoById(@PathVariable int studentId, @RequestBody StudentReq studentReq){
-        RspBody rspBody = studentInfoService.putStudentById(studentId, studentReq);
-        return rspBody;
+    @PostMapping("/edit/{studentId}")
+    public String putStudentInfoById(@PathVariable int studentId, @ModelAttribute StudentReq studentReq, Model model){
+        studentInfoService.putStudentById(studentId, studentReq);
+        return "redirect:/api/learning/student";
     }
 }
