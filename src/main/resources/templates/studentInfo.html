@@ -40,12 +40,13 @@
       <td>
         <a th:href="@{'/api/learning/student/edit/' + ${student.studentId}}">編輯</a>
         |
-        <a th:href="@{'/api/learning/student/delete/' + ${student.studentId}}" th:method="delete">刪除</a>
+        <a th:href="@{'/api/learning/student/delete/' + ${student.studentId}}"
+           onclick="return confirm('確定要刪除這位學生嗎？')"
+           th:method="delete">刪除</a>
       </td>
     </tr>
     </tbody>
   </table>
 </div>
-
 </body>
 </html>
