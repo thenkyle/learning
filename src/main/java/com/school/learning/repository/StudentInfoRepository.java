@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudentInfoRepository extends JpaRepository<StudentInfo, Integer> {
     StudentInfo findById(int studentId);
-    Long deleteById(int studentId);
+    Integer deleteById(int studentId);
 }

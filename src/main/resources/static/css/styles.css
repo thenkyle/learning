@@ -42,8 +42,12 @@ th {
 }
 
 button {
-  padding: 10px;
-  cursor: pointer;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #379fd3;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
 }
 
 a {

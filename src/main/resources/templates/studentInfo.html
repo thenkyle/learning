@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Management System</title>
-  <link rel="stylesheet" th:href="@{/css/styles.css}">
-
+  <title>補習班學員管理系統</title>
+  <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body>
 
-<div>
+<div class="container">
   <h2>補習班學員管理系統</h2>
 
   <!-- Student List -->
@@ -27,7 +26,7 @@
       <th>年齡</th>
       <th>性別</th>
       <th>電話</th>
-      <th></th>
+      <th>操作</th>
     </tr>
     </thead>
     <tbody>
@@ -38,15 +37,16 @@
       <td th:text="${student.studentGender}"></td>
       <td th:text="${student.studentTel}"></td>
       <td>
-        <a th:href="@{'/api/learning/student/edit/' + ${student.studentId}}">編輯</a>
-        |
-        <a th:href="@{'/api/learning/student/delete/' + ${student.studentId}}"
-           onclick="return confirm('確定要刪除這位學生嗎？')"
-           th:method="delete">刪除</a>
+        <div class="actions">
+          <a class="edit" th:href="@{'/api/learning/student/edit/' + ${student.studentId}}">編輯</a>
+          <a class="delete" th:href="@{'/api/learning/student/delete/' + ${student.studentId}}"
+             onclick="return confirm('確定要刪除這位學生嗎？')" th:method="delete">刪除</a>
+        </div>
       </td>
     </tr>
     </tbody>
   </table>
 </div>
+
 </body>
 </html>
