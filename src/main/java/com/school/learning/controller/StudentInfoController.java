@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class StudentInfoController {
 
     //刪除一筆學生資料
     @GetMapping("/delete/{studentId}")
-    public String deleteStudentInfoById(@PathVariable int studentId, RedirectAttributes redirectAttributes) {
+    public String deleteStudentInfoById(@PathVariable int studentId) {
         studentInfoService.deleteStudentById(studentId);
         return "redirect:/api/learning/student";
     }
@@ -56,7 +55,7 @@ public class StudentInfoController {
 
     //修改指定學生資料
     @PostMapping("/edit/{studentId}")
-    public String putStudentInfoById(@PathVariable int studentId, @ModelAttribute StudentReq studentReq, Model model){
+    public String putStudentInfoById(@PathVariable int studentId, @ModelAttribute StudentReq studentReq){
         studentInfoService.putStudentById(studentId, studentReq);
         return "redirect:/api/learning/student";
     }
