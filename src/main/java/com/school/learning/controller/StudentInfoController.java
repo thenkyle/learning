@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/learning/student")
+@CrossOrigin
 public class StudentInfoController {
     @Autowired
     private StudentInfoService studentInfoService;
