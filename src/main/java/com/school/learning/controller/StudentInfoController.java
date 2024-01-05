@@ -26,6 +26,9 @@ public class StudentInfoController {
         if(res.size() == 0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+        // 不允許除以0，程式會出現錯誤(用來測試Log)
+        // int x = 5 / 0;
+
         return res;
     }
 
