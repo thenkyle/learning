@@ -1,6 +1,6 @@
 package com.school.learning.repository;
 
-import com.school.learning.model.entity.StudentInfo;
+import com.school.learning.entity.StudentInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,7 @@
-package com.school.learning.model.entity;
+package com.school.learning.entity;
 
+
+import com.school.learning.constants.UserAuthority;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,18 +13,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="student_info")
-public class StudentInfo {
+@Table(name="user_info")
+public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int studentId;
+    private int userId;
     @Column
-    private String studentName;
+    private String account;
     @Column
-    private int studentAge;
+    private String password;
     @Column
-    private String studentGender;
-    @Column
-    private String studentTel;
-
+    private UserAuthority authority;
 }
