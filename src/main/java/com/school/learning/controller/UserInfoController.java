@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @Tag(name = "使用者資訊")
-@CrossOrigin
 public class UserInfoController {
     @Autowired
     private UserInfoService userInfoService;

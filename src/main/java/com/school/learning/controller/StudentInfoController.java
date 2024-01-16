@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/student")
 @Tag(name = "學員資料CRUD")
-@CrossOrigin
 public class StudentInfoController {
     @Autowired
     private StudentInfoService studentInfoService;
@@ -26,12 +25,21 @@ public class StudentInfoController {
         List<StudentInfo> res = studentInfoService.getStudentInfoList();
 
         if (res.size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "查無");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "查無資料");
         }
         // 不允許除以0，程式會出現錯誤(用來測試Log)
         // int x = 5 / 0;
 
         return res;
+    }
+
+    @GetMapping("/query/{studentId}")
+    public StudentInfo getStudentInfoById(@PathVariable int studentId) {
+        StudentInfo studentInfo = this.studentInfoService.getStudentInfoById(studentId);
+        if(null == studentInfo){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "查無資料該學員資料");
+        }
+        return studentInfo;
     }
 
     //新增一筆學生資料
@@ -58,8 +66,7 @@ public class StudentInfoController {
     @PutMapping("/edit/{studentId}")
     public RspBody putStudentInfoById(@PathVariable int studentId, @RequestBody StudentReq studentReq) {
         boolean isUpdate = studentInfoService.putStudentById(studentId, studentReq);
-        if(!isUpdate){
-            System.out.println("put in");
+        if (!isUpdate) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "學員編號：" + studentId + " 資料不存在.");
         }
         return new RspBody(HttpStatus.OK.value(), "學員編號：" + studentId + " 資料更新成功.");

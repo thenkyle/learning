@@ -21,6 +21,12 @@ public class StudentInfoService {
         return res;
     }
 
+    //取得指定學生資料
+    public StudentInfo getStudentInfoById(int studentId){
+        StudentInfo studentInfo = this.studentInfoRepository.findById(studentId);
+        return studentInfo;
+    }
+
     //新增學生資料
     public boolean insertStudentInfo(StudentReq studentReq) {
         StudentInfo studentInfo = new StudentInfo();

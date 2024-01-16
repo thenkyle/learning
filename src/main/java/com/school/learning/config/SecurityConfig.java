@@ -24,8 +24,8 @@ public class SecurityConfig {
                     .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/jwt-token").permitAll() //允許swagger頁面不用身份授權.
                     .requestMatchers( "/api/v1/users/login").permitAll() //允許login呼叫不用身份授權,但登入會做密碼驗證.
                     .requestMatchers(HttpMethod.GET, "/**").permitAll() //允許所有GET的呼叫不用身份授權
-                    .requestMatchers(HttpMethod.POST, "/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/**").permitAll() //允許所有POST的呼叫不用身份授權
+//                    .requestMatchers(HttpMethod.POST, "/**").permitAll()
+//                    .requestMatchers(HttpMethod.DELETE, "/**").permitAll() //允許所有POST的呼叫不用身份授權
                     .anyRequest().authenticated(); //上述以外的Url都要授權.
         }).csrf(AbstractHttpConfigurer::disable);
         return http.build();
