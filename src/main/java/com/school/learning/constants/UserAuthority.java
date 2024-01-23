@@ -1,5 +1,12 @@
 package com.school.learning.constants;
 
-public enum UserAuthority {
-    ADMIN, USER;
+import org.springframework.security.core.GrantedAuthority;
+
+public enum UserAuthority implements GrantedAuthority {
+    ADMIN, USER, GUEST;
+
+    @Override
+    public String getAuthority(){
+        return name();
+    }
 }

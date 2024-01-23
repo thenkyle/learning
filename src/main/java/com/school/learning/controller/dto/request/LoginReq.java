@@ -1,17 +1,13 @@
 package com.school.learning.controller.dto.request;
 
-import com.school.learning.constants.UserAuthority;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserReq {
+public class LoginReq {
     private String username;
     private String password;
-    private UserAuthority authority;
 }

@@ -4,6 +4,7 @@ import com.school.learning.controller.dto.request.StudentReq;
 import com.school.learning.controller.dto.response.RspBody;
 import com.school.learning.entity.StudentInfo;
 import com.school.learning.service.StudentInfoService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,14 +14,15 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/student")
-@Tag(name = "學員資料CRUD")
+@RequestMapping("api/v1/students")
+@Tag(name = "學員資訊")
 public class StudentInfoController {
     @Autowired
     private StudentInfoService studentInfoService;
 
-    //取得所有學生資料
-    @GetMapping("/query")
+
+    @Operation(summary = "查詢所有學生資料")
+    @GetMapping
     public List<StudentInfo> getStudentInfoList() {
         List<StudentInfo> res = studentInfoService.getStudentInfoList();
 
@@ -33,7 +35,8 @@ public class StudentInfoController {
         return res;
     }
 
-    @GetMapping("/query/{studentId}")
+    @Operation(summary = "查詢指定學生資料")
+    @GetMapping("/{studentId}")
     public StudentInfo getStudentInfoById(@PathVariable int studentId) {
         StudentInfo studentInfo = this.studentInfoService.getStudentInfoById(studentId);
         if(null == studentInfo){
@@ -42,8 +45,8 @@ public class StudentInfoController {
         return studentInfo;
     }
 
-    //新增一筆學生資料
-    @PostMapping("/insert")
+    @Operation(summary = "新增一筆學生資料")
+    @PostMapping
     public RspBody insertStudentInfoReq(@RequestBody StudentReq studentReq) {
         boolean isInsert = studentInfoService.insertStudentInfo(studentReq);
         if (!isInsert) {
@@ -52,8 +55,8 @@ public class StudentInfoController {
         return new RspBody(HttpStatus.CREATED.value(), "新增成功.");
     }
 
-    //刪除一筆學生資料
-    @DeleteMapping("/delete/{studentId}")
+    @Operation(summary = "刪除一筆學生資料")
+    @DeleteMapping("/{studentId}")
     public RspBody deleteStudentInfoById(@PathVariable int studentId) {
         boolean isDelete = studentInfoService.deleteStudentById(studentId);
         if (!isDelete) {
@@ -62,8 +65,8 @@ public class StudentInfoController {
         return new RspBody(HttpStatus.OK.value(), "刪除成功.");
     }
 
-    //修改指定學生資料
-    @PutMapping("/edit/{studentId}")
+    @Operation(summary = "修改指定學生資料")
+    @PutMapping("/{studentId}")
     public RspBody putStudentInfoById(@PathVariable int studentId, @RequestBody StudentReq studentReq) {
         boolean isUpdate = studentInfoService.putStudentById(studentId, studentReq);
         if (!isUpdate) {
