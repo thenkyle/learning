@@ -1,6 +1,11 @@
 package com.school.learning.config;
 
+import com.school.learning.service.JwtTokenService;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.crypto.SecretKey;
+
 @Configuration
 @EnableWebSecurity //啟用Spring Security的Web安全性。
 public class SecurityConfig {
@@ -25,14 +32,14 @@ public class SecurityConfig {
             "/v3/api-docs/**"
     };
     private static final String[] AUTH_WHITELIST = {
-            "/auth/login",
-            "/api/v1/students/**"
+            "/api/v1/auth/**",
+//            "/api/v1/students/**"
 //            "/api/v1/users/**",
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http
-//            ,JwtTokenFilter jwtTokenFilter
+            ,JwtTokenFilter jwtTokenFilter
     ) throws Exception {
         //TODO
         http.authorizeHttpRequests(authorizeRequests -> {
@@ -42,14 +49,15 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll() //允許建立使用者
                             .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAuthority("ADMIN") //ADMIN才可查詢全部使用者
                             .requestMatchers(HttpMethod.GET,"/api/v1/users/?*").hasAnyAuthority("ADMIN","USER") //ADMIN和USER可以查詢指定使用者                            .requestMatchers(HttpMethod.GET, "/api/v1/students/**").permitAll()
-//                            .requestMatchers((HttpMethod.GET, "/api/v1/students").permitAll()
-//                            .requestMatchers(HttpMethod.POST, "/api/v1/students").permitAll()
-//                            .requestMatchers(HttpMethod.PUT, "/api/v1/students/?*").permitAll()
-//                            .requestMatchers(HttpMethod.DELETE, "/api/v1/students/?*").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/students").permitAll()
+                            .requestMatchers(HttpMethod.GET,"/api/v1/students/?*").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/students").hasAnyAuthority("ADMIN","USER")
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/students/?*").hasAuthority("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/api/v1/students/?*").hasAuthority("ADMIN")
                             .anyRequest().authenticated(); //上述以外的Url都要授權.
                 })
                 .csrf(AbstractHttpConfigurer::disable)
-//                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
         ;
         return http.build();
     }

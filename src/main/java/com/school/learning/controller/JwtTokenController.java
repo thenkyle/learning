@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @Tag(name = "權限相關")
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class JwtTokenController {
     @Autowired
     private JwtTokenService jwtTokenService;

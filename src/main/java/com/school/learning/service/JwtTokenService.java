@@ -12,6 +12,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,7 +27,10 @@ import java.util.Map;
 
 @Service
 public class JwtTokenService {
-    private Key secretKey;
+    @Value("${security.jwt.key}")
+    private String key;
+    @Value("${security.jwt.expirationMs}")
+    private int expirationMs;
     private JwtParser jwtParser;
 
     @Autowired
@@ -33,8 +38,11 @@ public class JwtTokenService {
 
     @PostConstruct
     private void init() {
-        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        this.jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
+        this.jwtParser = Jwts.parserBuilder().setSigningKey(secretKey()).build();
+    }
+
+    private Key secretKey() {
+        return Keys.hmacShaKeyFor(this.key.getBytes());
     }
 
     /**建立token*/
@@ -58,7 +66,7 @@ public class JwtTokenService {
     private String createAccessToken(String username) {
         // 有效時間（毫秒）
         long expirationMillis = Instant.now()
-                .plusSeconds(90)
+                .plusSeconds(expirationMs)
                 .getEpochSecond()
                 * 1000;
 
@@ -72,22 +80,19 @@ public class JwtTokenService {
         // 簽名後產生 token
         return Jwts.builder()
                 .setClaims(claims)
-                .signWith(this.secretKey)
+                .signWith(this.secretKey())
                 .compact();
     }
 
     /**解析token*/
     public Map<String, Object> parseToken(String token) {
-        Claims claims = jwtParser.parseClaimsJws(token).getBody();
+        System.out.println("我是token: "+token);
+        String resolveToken = token;
+        if(null != token && token.startsWith("Bearer ")){
+            resolveToken = token.replace("Bearer ","").trim();
+        }
+        Claims claims = jwtParser.parseClaimsJws(resolveToken).getBody();
         return new HashMap<>(claims);
     }
 
-    /**拆解 prefix Bearer*/
-    public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
 }
