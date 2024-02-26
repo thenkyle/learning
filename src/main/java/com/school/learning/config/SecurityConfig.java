@@ -33,13 +33,14 @@ public class SecurityConfig {
     };
     private static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/**",
+            "/?*", "/assets/**"
 //            "/api/v1/students/**"
 //            "/api/v1/users/**",
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http
-            ,JwtTokenFilter jwtTokenFilter
+            , JwtTokenFilter jwtTokenFilter
     ) throws Exception {
         //TODO
         http.authorizeHttpRequests(authorizeRequests -> {
@@ -48,10 +49,11 @@ public class SecurityConfig {
                             .requestMatchers(AUTH_WHITELIST).permitAll() //允許不用做身份授權的白名單.
                             .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll() //允許建立使用者
                             .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAuthority("ADMIN") //ADMIN才可查詢全部使用者
-                            .requestMatchers(HttpMethod.GET,"/api/v1/users/?*").hasAnyAuthority("ADMIN","USER") //ADMIN和USER可以查詢指定使用者                            .requestMatchers(HttpMethod.GET, "/api/v1/students/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/users/?*").hasAnyAuthority("ADMIN", "USER") //ADMIN和USER可以查詢指定使用者
+                            // .requestMatchers(HttpMethod.GET, "/api/v1/students/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/students").permitAll()
-                            .requestMatchers(HttpMethod.GET,"/api/v1/students/?*").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/api/v1/students").hasAnyAuthority("ADMIN","USER")
+                            .requestMatchers(HttpMethod.GET, "/api/v1/students/?*").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/students").hasAnyAuthority("ADMIN", "USER")
                             .requestMatchers(HttpMethod.PUT, "/api/v1/students/?*").hasAuthority("ADMIN")
                             .requestMatchers(HttpMethod.DELETE, "/api/v1/students/?*").hasAuthority("ADMIN")
                             .anyRequest().authenticated(); //上述以外的Url都要授權.
@@ -70,7 +72,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /**會將輸入的明碼去跟DB做解碼驗證，若需要複雜如：帳號鎖定、依照權限分配能取得的DB資源等等*/
+    /**
+     * 會將輸入的明碼去跟DB做解碼驗證，若需要複雜如：帳號鎖定、依照權限分配能取得的DB資源等等
+     */
     @Bean
     public AuthenticationProvider authenticationProvider(
             UserDetailsService userDetailsService,
