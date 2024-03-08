@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StudentReq {
     private String studentName;
-    private int studentAge;
+    private String studentBth;
     private String studentGender;
     private String studentTel;
 

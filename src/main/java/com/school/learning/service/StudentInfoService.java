@@ -31,7 +31,7 @@ public class StudentInfoService {
     public boolean insertStudentInfo(StudentReq studentReq) {
         StudentInfo studentInfo = new StudentInfo();
         studentInfo.setStudentName(studentReq.getStudentName());
-        studentInfo.setStudentAge(studentReq.getStudentAge());
+        studentInfo.setStudentBth(studentReq.getStudentBth());
         studentInfo.setStudentGender(studentReq.getStudentGender());
         studentInfo.setStudentTel(studentReq.getStudentTel());
         this.studentInfoRepository.save(studentInfo);
@@ -56,7 +56,7 @@ public class StudentInfoService {
             return false;
         }
         studentInfo.setStudentName(studentReq.getStudentName());
-        studentInfo.setStudentAge(studentReq.getStudentAge());
+        studentInfo.setStudentBth(studentReq.getStudentBth());
         studentInfo.setStudentGender(studentReq.getStudentGender());
         studentInfo.setStudentTel(studentReq.getStudentTel());
         studentInfoRepository.save(studentInfo);

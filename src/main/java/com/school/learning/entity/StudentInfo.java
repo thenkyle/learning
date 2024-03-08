@@ -1,13 +1,13 @@
 package com.school.learning.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@Getter
-@Setter
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -19,7 +19,7 @@ public class StudentInfo {
     @Column
     private String studentName;
     @Column
-    private int studentAge;
+    private String studentBth;
     @Column
     private String studentGender;
     @Column

@@ -54,7 +54,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/students").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/students/?*").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/students").hasAnyAuthority("ADMIN", "USER")
-                            .requestMatchers(HttpMethod.PUT, "/api/v1/students/?*").hasAuthority("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/students/?*").hasAnyAuthority("ADMIN","USER")
                             .requestMatchers(HttpMethod.DELETE, "/api/v1/students/?*").hasAuthority("ADMIN")
                             .anyRequest().authenticated(); //上述以外的Url都要授權.
                 })

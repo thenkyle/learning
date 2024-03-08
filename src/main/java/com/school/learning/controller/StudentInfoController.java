@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -19,7 +21,6 @@ import java.util.List;
 public class StudentInfoController {
     @Autowired
     private StudentInfoService studentInfoService;
-
 
     @Operation(summary = "查詢所有學生資料")
     @GetMapping
@@ -69,6 +70,7 @@ public class StudentInfoController {
     @PutMapping("/{studentId}")
     public RspBody putStudentInfoById(@PathVariable int studentId, @RequestBody StudentReq studentReq) {
         boolean isUpdate = studentInfoService.putStudentById(studentId, studentReq);
+
         if (!isUpdate) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "學員編號：" + studentId + " 資料不存在.");
         }
