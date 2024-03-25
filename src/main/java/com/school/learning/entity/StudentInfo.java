@@ -24,5 +24,8 @@ public class StudentInfo {
     private String studentGender;
     @Column
     private String studentTel;
+    @Lob
+    @Column(name = "file", columnDefinition = "LONGBLOB")
+    private byte[] file;
 
 }

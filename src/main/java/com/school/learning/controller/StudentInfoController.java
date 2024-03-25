@@ -9,8 +9,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -40,16 +42,27 @@ public class StudentInfoController {
     @GetMapping("/{studentId}")
     public StudentInfo getStudentInfoById(@PathVariable int studentId) {
         StudentInfo studentInfo = this.studentInfoService.getStudentInfoById(studentId);
-        if(null == studentInfo){
+        if (null == studentInfo) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "查無資料該學員資料");
         }
         return studentInfo;
     }
 
     @Operation(summary = "新增一筆學生資料")
-    @PostMapping
-    public RspBody insertStudentInfoReq(@RequestBody StudentReq studentReq) {
-        boolean isInsert = studentInfoService.insertStudentInfo(studentReq);
+    @PostMapping(consumes = "multipart/form-data")
+    public RspBody insertStudentInfoReq(@RequestParam String studentName,
+                                        @RequestParam String studentBth,
+                                        @RequestParam String studentGender,
+                                        @RequestParam String studentTel,
+                                        @RequestParam(required = false) MultipartFile file) {
+        StudentReq studentReq = new StudentReq();
+        studentReq.setStudentName(studentName);
+        studentReq.setStudentBth(studentBth);
+        studentReq.setStudentGender(studentGender);
+        studentReq.setStudentTel(studentTel);
+        studentReq.setFile(file);
+
+        boolean isInsert = studentInfoService.insertStudentInfo(studentReq, file);
         if (!isInsert) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "新增失敗.");
         }
@@ -68,8 +81,18 @@ public class StudentInfoController {
 
     @Operation(summary = "修改指定學生資料")
     @PutMapping("/{studentId}")
-    public RspBody putStudentInfoById(@PathVariable int studentId, @RequestBody StudentReq studentReq) {
-        boolean isUpdate = studentInfoService.putStudentById(studentId, studentReq);
+    public RspBody putStudentInfoById(@PathVariable int studentId, @RequestParam String studentName,
+                                      @RequestParam String studentBth,
+                                      @RequestParam String studentGender,
+                                      @RequestParam String studentTel,
+                                      @RequestParam(required = false) MultipartFile file) throws IOException {
+        StudentReq studentReq = new StudentReq();
+        studentReq.setStudentName(studentName);
+        studentReq.setStudentBth(studentBth);
+        studentReq.setStudentGender(studentGender);
+        studentReq.setStudentTel(studentTel);
+        studentReq.setFile(file);
+        boolean isUpdate = studentInfoService.putStudentById(studentId, studentReq, file);
 
         if (!isUpdate) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "學員編號：" + studentId + " 資料不存在.");
